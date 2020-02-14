@@ -1,38 +1,38 @@
+#!/Usr/bin/python
+#
 # -*- coding: utf-8 -*-
 import config
 import telebot
 from telebot import types
 
+whitelist = ["kreout444", "andrey78787", "StanislavVerigin"]
+
+
 bot = telebot.TeleBot(config.token)
 
 
-	
 @bot.message_handler(commands=["start"])
 def start(message):
-	bot.send_message(message.chat.id, 'Hello. \n\n Write /help fro help.')
+    bot.send_message(message.chat.id, 'Здравствуйте! \n\n Для помощи ввдеите /help\n\n Для заказа пропуска на автомобиль введите его регистранционный номер')
+
 
 @bot.message_handler(commands=["help"])
 def start(message):
-	bot.send_message(message.chat.id, 'Help message😈')
+    bot.send_message(message.chat.id, 'Help message😈')
 
-
-
-
-
-
+@bot.message_handler(commands=["avto"])
+def start(message):
+     bot.send_message(message.chat.id, 'Авто зарегистрировано')\
 
 @bot.message_handler(content_types=["text"])
 def messages(message):
-	if int(message.chat.id) == int(config.owner):
-		try:
-			chatId=message.text.split(': ')[0]
-			text=message.text.split(': ')[1]
-			bot.send_message(chatId, text)
-		except:
-			pass
-	else:
-		bot.send_message(config.owner, str(message.chat.id) + ': ' + message.text)
-		bot.send_message(message.chat.id, '%s, wait please 👍'%message.chat.username)
+    x = 0
+    while x < len(whitelist):
+     if message.from_user.username == whitelist[x]:
+        bot.send_message(config.owner, str(message.from_user.username) +': ' + str(message.from_user.first_name) +': ' + str(message.from_user.last_name) +': ' + message.text)
+        bot.send_message(message.chat.id, 'Здравствуйте! Ваша Заявка Принята')
+     x += 1
+
 
 if __name__ == '__main__':
-	bot.polling(none_stop = True)
+    bot.polling(none_stop=True)
